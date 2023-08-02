@@ -22,7 +22,7 @@ const MainLayout = () => {
         <Navbar />
       </header>
       <main>
-        <Outlet context={user} />
+        <Outlet />
       </main>
     </>
   );
