@@ -16,8 +16,8 @@ const Router = () => {
     <BrowserRouter>
       <AnimatePresence mode="wait">
         <Routes>
-          <Route path="auth" element={<AuthLayout />}>
-            <Route path="login" element={<Login />} />
+          <Route path="/auth" element={<AuthLayout />}>
+            <Route index path="login" element={<Login />} />
           </Route>
           <Route path="/" element={<MainLayout />}>
             <Route index path="/" element={<Home />} />
