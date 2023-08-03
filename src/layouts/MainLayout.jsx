@@ -3,6 +3,7 @@ import { Navigate, Outlet } from "react-router-dom/dist";
 import { useTranslation } from "react-i18next";
 import Navbar from "@components/shared/Navbar";
 import useCookieAuth from "@/hooks/useCookieAuth";
+import LeftDrawer from "../components/daisyui/LeftDrawer";
 
 const MainLayout = () => {
   const { i18n } = useTranslation();
@@ -21,8 +22,9 @@ const MainLayout = () => {
       <header>
         <Navbar />
       </header>
-      <main>
+      <main className="relative">
         <Outlet />
+        <LeftDrawer />
       </main>
     </>
   );

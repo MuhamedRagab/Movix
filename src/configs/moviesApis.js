@@ -15,4 +15,16 @@ export default [
     title: "Now Playing",
     url: "/movie/now_playing",
   },
+  {
+    title: "Trending",
+    url: "/trending/movie/week",
+  },
+  {
+    title: "Trending TV",
+    url: "/trending/tv/week",
+  },
+  {
+    title: "Trending Today",
+    url: "/trending/all/day",
+  },
 ];

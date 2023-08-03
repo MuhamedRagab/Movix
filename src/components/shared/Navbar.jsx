@@ -1,36 +1,12 @@
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { FaUserCircle } from "react-icons/fa";
 // import { AiFillHeart } from "react-icons/ai";
 import useCookieAuth from "@/hooks/useCookieAuth";
 import { googleLogout } from "@react-oauth/google";
-import { useState } from "react";
-import moviesApis from "@/configs/moviesApis";
-
-export const NavbarList = () => {
-  const [active, setActive] = useState(moviesApis[0]?.title || "");
-
-  return (
-    <ul className="flex items-center justify-center overflow-hidden mt-6 flex-wrap">
-      {moviesApis.map(({ title }) => (
-        <li key={title}>
-          <Link
-            to={`/${title}`}
-            className={`${
-              active === title && "text-gray-200"
-            } text-xl p-2 hover:text-gray-200 duration-300 whitespace-nowrap`}
-            onClick={() => setActive(title)}
-          >
-            {title}
-          </Link>
-        </li>
-      ))}
-    </ul>
-  );
-};
+import SelectTheme from "@components/daisyui/SelectTheme";
 
 export default function Navbar() {
   const { removeAuth } = useCookieAuth();
-  const { id } = useParams();
 
   const signOut = () => {
     removeAuth();
@@ -46,8 +22,11 @@ export default function Navbar() {
           </Link>
         </div>
 
-        <div className="flex-none">
+        <div className="flex-none items-center">
           {/* Favourites */}
+          <button className="mr-3">
+            <SelectTheme size={30} />
+          </button>
 
           <div className="dropdown dropdown-end">
             <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
@@ -68,7 +47,6 @@ export default function Navbar() {
           </div>
         </div>
       </div>
-      {!id && <NavbarList />}
     </nav>
   );
 }

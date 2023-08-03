@@ -8,12 +8,23 @@ import { CookiesProvider } from "react-cookie";
 import Router from "./Router";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import FontLoader from "../components/shared/FontLoader";
+import { useEffect } from "react";
 
 i18next.init(i18nNextOptions);
 
 const queryClient = new QueryClient();
 
 export default function Root() {
+  useEffect(() => {
+    if (!localStorage.getItem("theme")) {
+      localStorage.setItem("theme", "Dark");
+    }
+    document.documentElement.setAttribute(
+      "data-theme",
+      localStorage.getItem("theme")
+    );
+  }, []);
+
   return (
     <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
       <I18nextProvider i18n={i18next}>

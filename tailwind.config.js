@@ -6,5 +6,16 @@ export default {
   theme: {
     extend: {},
   },
+  daisyui: {
+    themes: [
+      "dark",
+      "dracula",
+      "luxury",
+      "forest",
+      "halloween",
+      "coffee",
+      "night",
+    ],
+  },
   plugins: [require("daisyui")],
 };
