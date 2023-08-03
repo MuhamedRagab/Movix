@@ -1,12 +1,12 @@
 import { Link, useLocation, useParams } from "react-router-dom";
 import { useQuery } from "react-query";
 import { motion } from "framer-motion";
-import MovieCard from "@/components/movie/MovieCard";
 import toast from "react-hot-toast";
 import { getMoviesByCategory } from "@/api/movies";
 import Pagination from "@/components/daisyui/Pagination";
 import { useEffect, useState, lazy } from "react";
-const Loader = lazy(() => import("@components/shared/loader"));
+const Loader = lazy(() => import("@components/shared/Loader"));
+const MovieCard = lazy(() => import("@/components/movie/MovieCard"));
 
 const MovieCategory = () => {
   const location = useLocation();
