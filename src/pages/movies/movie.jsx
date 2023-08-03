@@ -5,7 +5,7 @@ import toast from "react-hot-toast";
 import { useQuery } from "react-query";
 import { getMovieById } from "@/api/movies";
 import { useEffect, lazy } from "react";
-const Loader = lazy(() => import("@components/shared/loader"));
+const Loader = lazy(() => import("@components/shared/Loader"));
 
 export const ProductionCompanies = ({ production_companies }) => {
   if (!production_companies) return null;
