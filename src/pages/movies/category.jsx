@@ -5,12 +5,15 @@ import MovieCard from "@/components/movie/MovieCard";
 import toast from "react-hot-toast";
 import { getMoviesByCategory } from "@/api/movies";
 import Pagination from "@/components/daisyui/Pagination";
-import { useState } from "react";
+import { useEffect, useState, lazy } from "react";
+const Loader = lazy(() => import("@components/shared/loader"));
 
 const MovieCategory = () => {
   const location = useLocation();
   const { category } = useParams();
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(
+    parseInt(window.sessionStorage.getItem("page")) || 1
+  );
 
   const { data: movies, isLoading } = useQuery({
     queryKey: ["movies", category, page],
@@ -20,14 +23,20 @@ const MovieCategory = () => {
     optimisticResults: true,
     getPreviousPageParam: (firstPage) => firstPage - 1,
     getNextPageParam: (lastPage) => lastPage + 1,
-    onSuccess: (data) => {
-      console.log(data);
-    },
+    suspense: true,
+    useErrorBoundary: true,
+    staleTime: 1000 * 60 * 60, // 1 hour
     onError: (error) => {
       console.log(error);
       toast.error("Something went wrong");
+      toast.error("Come back later");
     },
   });
+
+  useEffect(() => {
+    document.title = `${category} | Movie App`;
+    setPage(1);
+  }, [category]);
 
   return (
     <motion.section
@@ -49,18 +58,22 @@ const MovieCategory = () => {
         )}
       </div>
       {isLoading ? (
-        <div className="flex justify-center items-center">
-          <span className="loading loading-dots loading-lg"></span>
-        </div>
+        <Loader />
       ) : (
         <>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 mt-8 gap-4">
+          <motion.div
+            initial={{ opacity: 0, y: 100 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1 }}
+            exit={{ opacity: 0, y: 100 }}
+            className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 mt-8 gap-4"
+          >
             {movies?.results?.map(({ id, ...movie }) => (
               <Link to={`/${category}/movie/${id}`} key={id}>
                 <MovieCard {...movie} />
               </Link>
             ))}
-          </div>
+          </motion.div>
 
           <div className="fixed bottom-6 left-1/2 -translate-x-1/2 bg-black rounded-lg">
             <Pagination
