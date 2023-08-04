@@ -7,7 +7,7 @@ import { useEffect, useState, lazy } from "react";
 import { LazyLoadComponent } from "react-lazy-load-image-component";
 import Pagination from "@/components/daisyui/Pagination";
 const Loader = lazy(() => import("@components/shared/Loader"));
-const MovieCard = lazy(() => import("@/components/movie/MovieCard"));
+import MovieCard from "@/components/movie/MovieCard";
 
 const MovieCategory = () => {
   const location = useLocation();
@@ -64,7 +64,19 @@ const MovieCategory = () => {
         <>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 mt-8 gap-4">
             {movies?.results?.map(({ id, ...movie }) => (
-              <LazyLoadComponent key={id} useIntersectionObserver>
+              <LazyLoadComponent
+                key={id}
+                useIntersectionObserver
+                threshold={0.3}
+                placeholder={
+                  <div>
+                    <div className="w-full h-64 bg-gray-800 animate-pulse"></div>
+                    <div className="w-1/2 h-4 bg-gray-800 animate-pulse mt-2"></div>
+                    <div className="w-1/4 h-4 bg-gray-800 animate-pulse mt-2"></div>
+                    <div className="w-1/6 h-4 bg-gray-800 animate-pulse mt-2"></div>
+                  </div>
+                }
+              >
                 <Link to={`/${category}/movie/${id}`}>
                   <MovieCard {...movie} />
                 </Link>

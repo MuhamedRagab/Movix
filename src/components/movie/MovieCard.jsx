@@ -19,13 +19,16 @@ const MovieCard = ({
           className="image-full object-cover transform sm:group-hover:scale-125"
           src={`${import.meta.env.VITE_BASE_IMAGE_URL}/${
             poster_path || backdrop_path
-          }`}
+          }?w=200&h=300`}
           style={{ transition: "transform 0.25s ease-in-out" }}
           alt={title || original_title}
           loading="lazy"
           effect="blur"
-          referrerPolicy="no-referrer"
           useIntersectionObserver
+          threshold={0.3}
+          draggable={false}
+          height={300}
+          width={200}
         />
       </div>
       <div className="absolute -top-full hidden sm:block group-hover:-top-[6px] left-0 w-full h-full bg-black bg-opacity-90 p-2 text-md overflow-auto duration-300 select-none">
