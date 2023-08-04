@@ -1,7 +1,8 @@
 import { Navigate, Outlet } from "react-router-dom/dist";
-import Navbar from "@components/shared/Navbar";
+import Navbar from "./Navbar";
 import useCookieAuth from "@/hooks/useCookieAuth";
-import LeftDrawer from "../components/daisyui/LeftDrawer";
+import LeftDrawer from "@components/daisyui/LeftDrawer";
+import "react-lazy-load-image-component/src/effects/blur.css";
 
 const MainLayout = () => {
   const { user } = useCookieAuth();

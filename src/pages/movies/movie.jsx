@@ -132,6 +132,7 @@ export const MovieInfo = ({
         allowFullScreen="allowfullscreen"
         className="w-full pt-8"
         height={500}
+        loading="lazy"
       ></iframe>
     </article>
   );

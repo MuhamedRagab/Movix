@@ -3,8 +3,9 @@ import { useQuery } from "react-query";
 import { motion } from "framer-motion";
 import toast from "react-hot-toast";
 import { getMoviesByCategory } from "@/api/movies";
-import Pagination from "@/components/daisyui/Pagination";
 import { useEffect, useState, lazy } from "react";
+import { LazyLoadComponent } from "react-lazy-load-image-component";
+import Pagination from "@/components/daisyui/Pagination";
 const Loader = lazy(() => import("@components/shared/Loader"));
 const MovieCard = lazy(() => import("@/components/movie/MovieCard"));
 
@@ -61,19 +62,15 @@ const MovieCategory = () => {
         <Loader />
       ) : (
         <>
-          <motion.div
-            initial={{ opacity: 0, y: 100 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1 }}
-            exit={{ opacity: 0, y: 100 }}
-            className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 mt-8 gap-4"
-          >
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 mt-8 gap-4">
             {movies?.results?.map(({ id, ...movie }) => (
-              <Link to={`/${category}/movie/${id}`} key={id}>
-                <MovieCard {...movie} />
-              </Link>
+              <LazyLoadComponent key={id} useIntersectionObserver>
+                <Link to={`/${category}/movie/${id}`}>
+                  <MovieCard {...movie} />
+                </Link>
+              </LazyLoadComponent>
             ))}
-          </motion.div>
+          </div>
 
           <div className="fixed bottom-6 left-1/2 -translate-x-1/2 bg-black rounded-lg">
             <Pagination

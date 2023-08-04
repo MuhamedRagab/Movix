@@ -4,9 +4,41 @@ import { FaUserCircle } from "react-icons/fa";
 import useCookieAuth from "@/hooks/useCookieAuth";
 import { googleLogout } from "@react-oauth/google";
 import SelectTheme from "@components/daisyui/SelectTheme";
+import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
+
+export const UseIsOnline = () => {
+  const [isOnline, setIsOnline] = useState(true);
+
+  useEffect(() => {
+    const handleOnline = () => {
+      setIsOnline(true);
+      toast.success("Network connection restored", {
+        duration: 4000,
+      });
+    };
+    const handleOffline = () => {
+      setIsOnline(false);
+      toast.error("Network connection lost");
+    };
+
+    window.addEventListener("online", handleOnline);
+    window.addEventListener("offline", handleOffline);
+
+    return () => {
+      window.removeEventListener("online", handleOnline);
+      window.removeEventListener("offline", handleOffline);
+    };
+  }, []);
+
+  return isOnline;
+};
 
 export default function Navbar() {
   const { removeAuth } = useCookieAuth();
+
+  // check if user is online
+  const isOnline = UseIsOnline();
 
   const signOut = () => {
     removeAuth();
@@ -29,9 +61,17 @@ export default function Navbar() {
           </button>
 
           <div className="dropdown dropdown-end">
-            <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
-              <FaUserCircle size={32} />
-            </label>
+            <div className="w-24 rounded-full">
+              <label
+                tabIndex={0}
+                className={`btn btn-ghost btn-circle avatar ${
+                  isOnline ? "online" : " offline"
+                }
+                `}
+              >
+                <FaUserCircle size={32} />
+              </label>
+            </div>
             <ul
               tabIndex={0}
               className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-40"

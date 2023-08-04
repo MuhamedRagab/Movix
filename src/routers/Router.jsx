@@ -21,14 +21,12 @@ const router = createBrowserRouter([
   {
     path: "/auth",
     element: <AuthLayout />,
-    errorElement: <ErrorBoundary />,
-    children: [{ path: "login", element: <Login /> }],
     ErrorBoundary: <ErrorBoundary />,
+    children: [{ path: "login", element: <Login /> }],
   },
   {
     path: "/",
     element: <MainLayout />,
-    errorElement: <ErrorBoundary />,
     ErrorBoundary: <ErrorBoundary />,
     children: [
       { path: "/", element: <Home /> },
