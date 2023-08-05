@@ -1,3 +1,5 @@
+/* eslint-disable react-refresh/only-export-components */
+import { memo } from "react";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 
 /* eslint-disable react/prop-types */
@@ -10,16 +12,18 @@ const MovieCard = ({
   vote_average,
   popularity,
   vote_count,
+  height,
+  width,
 }) => {
   return (
-    <div className="relative group overflow-hidden ">
+    <div className="relative group overflow-hidden w-full">
       <div>
         <LazyLoadImage
           wrapperClassName="bg-base-200 overflow-hidden"
           className="image-full object-cover transform sm:group-hover:scale-125"
           src={`${import.meta.env.VITE_BASE_IMAGE_URL}/${
             poster_path || backdrop_path
-          }?w=200&h=300`}
+          }`}
           style={{ transition: "transform 0.25s ease-in-out" }}
           alt={title || original_title}
           loading="lazy"
@@ -27,8 +31,8 @@ const MovieCard = ({
           useIntersectionObserver
           threshold={0.3}
           draggable={false}
-          height={300}
-          width={200}
+          height={height && height}
+          width={width && width}
         />
       </div>
       <div className="absolute -top-full hidden sm:block group-hover:-top-[6px] left-0 w-full h-full bg-black bg-opacity-90 p-2 text-md overflow-auto duration-300 select-none">
@@ -42,4 +46,4 @@ const MovieCard = ({
   );
 };
 
-export default MovieCard;
+export default memo(MovieCard);

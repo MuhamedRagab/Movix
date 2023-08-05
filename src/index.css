@@ -6,6 +6,7 @@ body {
   font-family: "Bungee Inline", cursive;
 }
 
+/* Scroolbar */
 ::-webkit-scrollbar {
   @apply h-2 w-2;
 }
@@ -17,4 +18,23 @@ body {
 }
 ::-webkit-scrollbar-thumb:hover {
   @apply bg-gray-400;
+}
+
+/* Swiper */
+.swiper-button-prev:after,
+.swiper-button-next:after,
+:is(.swiper-rtl) .swiper-button-prev:after,
+.swiper-button-next:after {
+  @apply text-white bg-base-100 sm:bg-opacity-70 sm:hover:bg-opacity-100 sm:duration-300 py-3 rounded-full;
+  font-size: 20px !important;
+}
+
+.swiper-button-next:after,
+.swiper-rtl .swiper-button-prev:after {
+  @apply px-4 sm:pl-5 sm:pr-4 mr-4;
+}
+
+.swiper-button-prev:after,
+.swiper-rtl .swiper-button-next:after {
+  @apply px-4 sm:pl-4 sm:pr-5 ml-4;
 }

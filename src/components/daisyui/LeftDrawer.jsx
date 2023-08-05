@@ -41,7 +41,7 @@ const LeftDrawer = () => {
   const drawerOverlayRef = useRef(null);
 
   return (
-    <div className="drawer">
+    <div className="drawer z-50">
       <input id="my-drawer" type="checkbox" className="drawer-toggle" />
       <div className="drawer-content fixed top-1/2 left-2 -translate-y-1/2">
         {/* Page content here */}

@@ -6,8 +6,8 @@ import { getMoviesByCategory } from "@/api/movies";
 import { useEffect, useState, lazy } from "react";
 import { LazyLoadComponent } from "react-lazy-load-image-component";
 import Pagination from "@/components/daisyui/Pagination";
-const Loader = lazy(() => import("@components/shared/Loader"));
 import MovieCard from "@/components/movie/MovieCard";
+const Loader = lazy(() => import("@components/shared/Loader"));
 
 const MovieCategory = () => {
   const location = useLocation();
@@ -18,15 +18,15 @@ const MovieCategory = () => {
 
   const { data: movies, isLoading } = useQuery({
     queryKey: ["movies", category, page],
-    queryFn: (category) => getMoviesByCategory(category, page),
+    queryFn: (category, page) => getMoviesByCategory(category, page),
     select: (data) => data.data,
     cacheTime: 1000 * 60 * 60, // 1 hour
-    optimisticResults: true,
-    getPreviousPageParam: (firstPage) => firstPage - 1,
-    getNextPageParam: (lastPage) => lastPage + 1,
-    suspense: true,
-    useErrorBoundary: true,
     staleTime: 1000 * 60 * 60, // 1 hour
+    enabled: !!category,
+    optimisticResults: true,
+    suspense: true,
+    keepPreviousData: true,
+    useErrorBoundary: true,
     onError: (error) => {
       console.log(error);
       toast.error("Something went wrong");
@@ -46,7 +46,7 @@ const MovieCategory = () => {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 1 }}
       exit={{ opacity: 0, y: 100 }}
-      className="container mx-auto px-2 py-4 mt-6"
+      className="container mx-auto px-2 pt-4 pb-20 mt-6"
     >
       <h1 className="relative w-fit mx-auto text-4xl font-bold py-4 text-center after:absolute after:bottom-0 after:h-1 after:w-1/3 after:-translate-x-1/2 after:left-1/2">
         {category}

@@ -7,7 +7,7 @@ export const getMoviesByCategory = ({ queryKey }) => {
   const [, category, page] = queryKey;
   const { url } = moviesApis.find((item) => item.title === category);
 
-  return axiosInstance.get(`${url}?api_key=${apiKey}&page=${page}`);
+  return axiosInstance.get(`${url}?api_key=${apiKey}&page=${page || 1}`);
 };
 
 export const getMovieById = ({ queryKey }) => {

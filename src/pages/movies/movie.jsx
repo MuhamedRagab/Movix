@@ -1,11 +1,10 @@
 /* eslint-disable react/prop-types */
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { motion } from "framer-motion";
 import toast from "react-hot-toast";
 import { useQuery } from "react-query";
 import { getMovieById } from "@/api/movies";
-import { useEffect, lazy } from "react";
-const Loader = lazy(() => import("@components/shared/Loader"));
+import VideosSlider from "@components/movie/VideosSlider";
 
 export const ProductionCompanies = ({ production_companies }) => {
   if (!production_companies) return null;
@@ -116,32 +115,25 @@ export const MovieInfo = ({
       </h1>
       <h3 className="text-center">{tagline}</h3>
       <p className="text-center mt-4">{overview}</p>
-      <div className="flex flex-col justify-center items-center mt-4 text-lg">
-        {status === "Relased" && (
-          <p className="text-center">release date: {release_date}</p>
-        )}
+      <div className="flex flex-col justify-center items-center mt-4 text-lg capitalize">
+        <p className="text-center capitalize">
+          {status}: {release_date}
+        </p>
+
         <p className="text-center">votes average: {vote_average}</p>
         <p className="text-center">votes count: {vote_count}</p>
-        <p>Budget: {budget}&#36;</p>
+        {budget > 0 && <p>Budget: {budget}&#36;</p>}
         <p>popularity: {popularity}</p>
       </div>
-      <iframe
-        src={`https://www.youtube.com/embed/${videos.results[0].key}`}
-        title={title}
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-        allowFullScreen="allowfullscreen"
-        className="w-full pt-8"
-        height={500}
-        loading="lazy"
-      ></iframe>
+
+      {videos?.results && <VideosSlider videos={videos?.results} />}
     </article>
   );
 };
 
 const Movie = () => {
-  const navigate = useNavigate();
   const { id } = useParams();
-  const { data: movie, isLoading } = useQuery({
+  const { data: movie } = useQuery({
     queryKey: ["movie", id],
     queryFn: (id) => getMovieById(id),
     select: (data) => data.data,
@@ -149,16 +141,16 @@ const Movie = () => {
     staleTime: 1000 * 60 * 10, // 1 hour
     suspense: true,
     useErrorBoundary: true,
-    onError: (error) => {
-      console.log(error);
+    enabled: !!id,
+    optimisticResults: true,
+    onSuccess: (data) => {
+      document.title = `${data.title} | Movie App`;
+    },
+    onError: () => {
       toast.error("Something went wrong");
-      setTimeout(() => navigate(-1, { replace: true }), 3000);
+      toast.error("Come back later");
     },
   });
-
-  useEffect(() => {
-    document.title = `${movie?.title} | Movie App`;
-  }, [movie]);
 
   return (
     <motion.section
@@ -173,30 +165,26 @@ const Movie = () => {
           `url(https://image.tmdb.org/t/p/original${movie.backdrop_path})`,
       }}
     >
-      <div className="bg-black bg-opacity-70 min-h-screen">
-        {isLoading || !movie ? (
-          <Loader />
-        ) : (
-          <div className="pt-16">
-            <MovieInfo {...movie} />
+      <div className="pt-16 bg-black bg-opacity-70">
+        {/* Info */}
+        <MovieInfo {...movie} />
 
-            <footer className="p-10 bg-base-200 text-base-content mt-8 text-center">
-              <div className="flex flex-wrap justify-center items-center mt-4 gap-4">
-                <Geners genres={movie.genres} />
-                <ProductionCompaniesNames
-                  production_companies={movie.production_companies}
-                />
-                <SpokenLanguages spoken_languages={movie.spoken_languages} />
-                <ProductionCountries
-                  production_countries={movie.production_countries}
-                />
-                <ProductionCompanies
-                  production_companies={movie.production_companies}
-                />
-              </div>
-            </footer>
+        {/* footer */}
+        <footer className="p-10 bg-base-200 text-base-content mt-8 text-center">
+          <div className="flex flex-wrap justify-center items-center mt-4 gap-4">
+            <Geners genres={movie.genres} />
+            <ProductionCompaniesNames
+              production_companies={movie.production_companies}
+            />
+            <SpokenLanguages spoken_languages={movie.spoken_languages} />
+            <ProductionCountries
+              production_countries={movie.production_countries}
+            />
+            <ProductionCompanies
+              production_companies={movie.production_companies}
+            />
           </div>
-        )}
+        </footer>
       </div>
     </motion.section>
   );

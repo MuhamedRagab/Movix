@@ -7,12 +7,12 @@ import MainLayout from "@/layouts/MainLayout";
 import Home from "@pages/home";
 
 // convert to lazy load
-const Login = lazy(() => import("@/pages/auth/login"));
+const Login = lazy(() => import("@pages/auth/login"));
 const AuthLayout = lazy(() => import("@/layouts/AuthLayout"));
-const MovieCategory = lazy(() => import("@/pages/movies/category"));
-const Movie = lazy(() => import("@/pages/movies/movie"));
-const ErrorBoundary = lazy(() => import("@/pages/_error_boundary"));
-const NotFoundPage = lazy(() => import("@/pages/not_found"));
+const MovieCategory = lazy(() => import("@pages/movies/category"));
+const Movie = lazy(() => import("@pages/movies/movie"));
+const ErrorBoundary = lazy(() => import("@pages/_error_boundary"));
+const NotFoundPage = lazy(() => import("@pages/not_found"));
 
 // Components
 import LoaderPage from "@/components/shared/LoaderPage";
@@ -21,13 +21,13 @@ const router = createBrowserRouter([
   {
     path: "/auth",
     element: <AuthLayout />,
-    ErrorBoundary: <ErrorBoundary />,
+    errorElement: <ErrorBoundary />,
     children: [{ path: "login", element: <Login /> }],
   },
   {
     path: "/",
     element: <MainLayout />,
-    ErrorBoundary: <ErrorBoundary />,
+    errorElement: <ErrorBoundary />,
     children: [
       { path: "/", element: <Home /> },
       { path: "/home", element: <Home /> },
