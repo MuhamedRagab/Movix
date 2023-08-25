@@ -20,7 +20,7 @@ const GoogleAuth = () => {
 
   const loginWithGoogle = useGoogleLogin({
     onSuccess: ({ access_token }) => {
-      setAuth({ data: access_token, expireDateByMin: 15 });
+      setAuth({ data: access_token, expireDateByMin: 4320 }); // 3 days
       console.clear();
     },
     onError: (error) => {
